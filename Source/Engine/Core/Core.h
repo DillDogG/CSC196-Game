@@ -4,3 +4,5 @@
 #include "Memory.h"
 #include "Time.h"
 #include "Vector2.h"
+#include "Transform.h"
+#include "MathUtls.h"
