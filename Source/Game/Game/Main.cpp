@@ -2,6 +2,8 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
 #include "../../Input/InputSystem.h"
+#include "Actor.h"
+#include "Player.h"
 #include <iostream>
 #include <thread>
 
@@ -62,6 +64,8 @@ int main(int argc, char* argv[]) {
 	float speed = 200;
 	float turnRate = kiko::DegreesToRadians(180);
 
+	Player player{ 200, kiko::DegreesToRadians(180), transform, model};
+
 	bool quit = false;
 	while (!quit) {
 		kiko::g_time.Tick();
@@ -80,8 +84,8 @@ int main(int argc, char* argv[]) {
 
 		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
 		transform.position += forward * speed * thrust * kiko::g_time.GetDeltaTime();
-		//transform.position.x = kiko::Wrap(transform.position.x, renderer.GetWidth());
-		//transform.position.y = kiko::Wrap(transform.position.y, renderer.GetHeight());
+		transform.position.x = kiko::Wrap(transform.position.x, (float)renderer.GetWidth());
+		transform.position.y = kiko::Wrap(transform.position.y, (float)renderer.GetHeight());
 
 		//kiko::vec2 direction;
 		//if (inputSystem.GetKeyDown(SDL_SCANCODE_W)) direction.y = -1;
@@ -106,7 +110,7 @@ int main(int argc, char* argv[]) {
 			renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
 			renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
-		model.Draw(renderer, transform.position, transform.rotation, transform.scale);
+		player.Draw(renderer);
 		
 		renderer.EndFrame();
 

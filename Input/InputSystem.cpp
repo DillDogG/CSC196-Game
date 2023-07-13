@@ -1,5 +1,7 @@
 #include "InputSystem.h"
 namespace kiko {
+	InputSystem g_inputSystem;
+
 	bool InputSystem::Initialize() {
 		int numKeys;
 		// get pointer to sdl keyboard states and number of keys
