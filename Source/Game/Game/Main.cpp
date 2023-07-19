@@ -96,9 +96,9 @@ int main(int argc, char* argv[]) {
 		float thrust = 0;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
 			thrust = 1;
-			audioSystem.PlayOneShot("thrusters");
-			//audioSystem.PlayOneShot("explosion");
-			//audioSystem.PlayOneShot("laser");
+			if (!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_W)) {
+				audioSystem.PlayOneShot("thrusters");
+			}
 		}
 
 		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
