@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "../../Audio/AudioSystem.h"
 #include <iostream>
 #include <thread>
 
@@ -42,6 +43,11 @@ int main(int argc, char* argv[]) {
 	kiko::g_renderer.Initialize();
 	kiko::g_renderer.CreateWindow("CSC196", 800, 600);
 	kiko::g_inputSystem.Initialize();
+	kiko::AudioSystem audioSystem;
+	audioSystem.Initialize();
+	audioSystem.AddAudio("thrusters", "Thrusters.wav");
+	audioSystem.AddAudio("explosion", "Explosion.wav");
+	audioSystem.AddAudio("laser", "Laser_Shoot.wav");
 
 	//std::vector<kiko::vec2> points{ { -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 } };
 	kiko::Model model;
@@ -80,6 +86,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		player.Update(kiko::g_time.GetDeltaTime());
+		audioSystem.Update();
 		
 		float rotate = 0;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
@@ -87,7 +94,12 @@ int main(int argc, char* argv[]) {
 		transform.rotation += rotate * turnRate * kiko::g_time.GetDeltaTime();
 
 		float thrust = 0;
-		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
+			thrust = 1;
+			audioSystem.PlayOneShot("thrusters");
+			//audioSystem.PlayOneShot("explosion");
+			//audioSystem.PlayOneShot("laser");
+		}
 
 		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
 		transform.position += forward * speed * thrust * kiko::g_time.GetDeltaTime();
