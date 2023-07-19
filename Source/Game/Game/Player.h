@@ -1,7 +1,7 @@
 #pragma once
-#include "Actor.h"
+#include "Framework/Actor.h"
 
-class Player : public Actor {
+class Player : public kiko::Actor {
 public:
 	Player(float speed, float turnRate, const kiko::Transform& transform, const kiko::Model& model) :
 		Actor{ transform, model },
@@ -9,7 +9,6 @@ public:
 		m_turnRate{ turnRate}
 	{}
 	void Update(float dt) override;
-	void Shoot();
 private:
 	float m_speed = 0;
 	float m_turnRate = 0;

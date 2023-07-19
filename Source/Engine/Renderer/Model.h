@@ -14,5 +14,6 @@ namespace kiko {
 		void Draw(Renderer& renderer, const Transform& transform);
 	private:
 		std::vector<vec2> m_points;
+		Color m_color;
 	};
 }

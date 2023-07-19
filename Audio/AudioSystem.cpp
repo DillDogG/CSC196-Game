@@ -1,5 +1,6 @@
 #include "AudioSystem.h"
 namespace kiko {
+	AudioSystem g_audioSystem;
 	bool AudioSystem::Initialize() {
 		FMOD::System_Create(&m_fmodSystem);
 		void* extradriverdata = nullptr;

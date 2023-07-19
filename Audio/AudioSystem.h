@@ -17,4 +17,6 @@ namespace kiko {
 		FMOD::System* m_fmodSystem;
 		std::map<std::string, FMOD::Sound*> m_sounds;
 	};
+
+	extern AudioSystem g_audioSystem;
 }

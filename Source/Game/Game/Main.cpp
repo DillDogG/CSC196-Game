@@ -2,12 +2,14 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Model.h"
 #include "../../Input/InputSystem.h"
-#include "Actor.h"
+#include "Framework/Actor.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "../../Audio/AudioSystem.h"
+#include "Framework/Scene.h"
 #include <iostream>
 #include <thread>
+//#include <memory>
 
 using namespace std;
 
@@ -37,17 +39,17 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+	kiko::MemoryTracker::Initialize();
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
 
 	kiko::g_renderer.Initialize();
 	kiko::g_renderer.CreateWindow("CSC196", 800, 600);
 	kiko::g_inputSystem.Initialize();
-	kiko::AudioSystem audioSystem;
-	audioSystem.Initialize();
-	audioSystem.AddAudio("thrusters", "Thrusters.wav");
-	audioSystem.AddAudio("explosion", "Explosion.wav");
-	audioSystem.AddAudio("laser", "Laser_Shoot.wav");
+	kiko::g_audioSystem.Initialize();
+	kiko::g_audioSystem.AddAudio("thrusters", "Thrusters.wav");
+	kiko::g_audioSystem.AddAudio("explosion", "Explosion.wav");
+	kiko::g_audioSystem.AddAudio("laser", "Laser_Shoot.wav");
 
 	//std::vector<kiko::vec2> points{ { -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 } };
 	kiko::Model model;
@@ -63,18 +65,19 @@ int main(int argc, char* argv[]) {
 		stars.push_back(Star(pos, vel));
 	}
 
+
 	kiko::Transform transform{ {400, 300}, 1.2f, 2 };
 
 	kiko::vec2 position{ 400, 300 };
 	float speed = 200;
-	float turnRate = kiko::DegreesToRadians(180);
+	constexpr float turnRate = kiko::DegreesToRadians(180);
 
-	Player player{ 200, kiko::Pi, transform, model};
-
-	std::vector<Enemy> enemies;
-	for (int i = 0; i < 100; i++) {
-		Enemy enemy{ 200, kiko::Pi, transform, model };
-		enemies.push_back(enemy);
+	kiko::Scene scene;
+	std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, kiko::Pi, transform, model);
+	scene.Add(std::move(player));
+	for (int i = 0; i < 5; i++) {
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(), kiko::Pi, kiko::Transform{{ (float)kiko::random(800), (float)kiko::random(600) }, kiko::randomf(3), 1 }, model);
+		scene.Add(std::move(enemy));
 	}
 
 	bool quit = false;
@@ -85,8 +88,7 @@ int main(int argc, char* argv[]) {
 			quit = true;
 		}
 
-		player.Update(kiko::g_time.GetDeltaTime());
-		audioSystem.Update();
+		kiko::g_audioSystem.Update();
 		
 		float rotate = 0;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
@@ -96,9 +98,9 @@ int main(int argc, char* argv[]) {
 		float thrust = 0;
 		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
 			thrust = 1;
-			if (!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_W)) {
-				audioSystem.PlayOneShot("thrusters");
-			}
+			//if (!kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_W)) {
+			kiko::g_audioSystem.PlayOneShot("thrusters");
+			//}
 		}
 
 		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
@@ -123,15 +125,15 @@ int main(int argc, char* argv[]) {
 			kiko::g_renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
 			kiko::g_renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}
-		player.Draw(kiko::g_renderer);
-		for (auto& enemy : enemies) {
-			enemy.Update(kiko::g_time.GetDeltaTime());
-			enemy.Draw(kiko::g_renderer);
-		}
+
+		kiko::g_renderer.SetColor(255, 255, 255, 255);
+		scene.Update(kiko::g_time.GetDeltaTime());
+		scene.Draw(kiko::g_renderer);
 		
 		kiko::g_renderer.EndFrame();
 
 		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
+	scene.RemoveAll();
 	return 0;
 }
