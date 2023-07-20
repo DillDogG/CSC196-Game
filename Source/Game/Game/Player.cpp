@@ -18,10 +18,34 @@ void Player::Update(float dt) {
 	m_transform.position += forward * m_speed * thrust * kiko::g_time.GetDeltaTime();
 	m_transform.position.x = kiko::Wrap(m_transform.position.x, (float)kiko::g_renderer.GetWidth());
 	m_transform.position.y = kiko::Wrap(m_transform.position.y, (float)kiko::g_renderer.GetHeight());
-
-	if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
+	if (m_fireTimer < 0) {
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) /*&& !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)*/) {
+			kiko::Transform transform { m_transform.position, m_transform.rotation, 1 };
+			std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>(400.0f, m_transform, m_model);
+			weapon->m_transform.scale /= 4;
+			weapon->m_tag = "pWeapon";
+			m_scene->Add(std::move(weapon));
+			m_fireTimer = m_fireRate;
+		}
+	}
+	else {
+		m_fireTimer -= dt;
+	}
+	m_immuneTimer -= dt;
+	/*if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 		kiko::Transform transform { m_transform.position, m_transform.rotation, 1 };
 		std::unique_ptr<Weapon> weapon = std::make_unique<Weapon>( 400.0f, m_transform, m_model );
+		weapon->m_tag = "pWeapon";
 		m_scene->Add(std::move(weapon));
+	} */
+	if (m_health < 1) m_destroyed = true;
+}
+
+void Player::OnCollision(Actor* other) {
+	if (m_immuneTimer <= 0) {
+		if (other->m_tag == "eWeapon" || other->m_tag == "Enemy") {
+			m_health--;
+			m_immuneTimer = m_immuneTime;
+		}
 	}
 }

@@ -1,15 +1,14 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/Model.h"
 #include "../../Input/InputSystem.h"
 #include "Framework/Actor.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "../../Audio/AudioSystem.h"
+#include "Renderer/ModelManager.h"
 #include "Framework/Scene.h"
 #include <iostream>
 #include <thread>
-//#include <memory>
 
 using namespace std;
 
@@ -39,6 +38,7 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+#pragma region Initialization
 	kiko::MemoryTracker::Initialize();
 	kiko::seedRandom((unsigned int)time(nullptr));
 	kiko::setFilePath("assets");
@@ -50,13 +50,6 @@ int main(int argc, char* argv[]) {
 	kiko::g_audioSystem.AddAudio("thrusters", "Thrusters.wav");
 	kiko::g_audioSystem.AddAudio("explosion", "Explosion.wav");
 	kiko::g_audioSystem.AddAudio("laser", "Laser_Shoot.wav");
-
-	//std::vector<kiko::vec2> points{ { -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 } };
-	kiko::Model model;
-	model.Load("ship.txt");
-
-	/* kiko::vec2 v{ 5, 5 };
-	v.Normalize(); */
 
 	vector<Star> stars;
 	for (int i = 0; i < 1000; i++) {
@@ -73,12 +66,15 @@ int main(int argc, char* argv[]) {
 	constexpr float turnRate = kiko::DegreesToRadians(180);
 
 	kiko::Scene scene;
-	std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, kiko::Pi, transform, model);
+	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, transform, kiko::g_modelManager.Get("ship.txt"));
+	player->m_tag = "Player";
 	scene.Add(std::move(player));
 	for (int i = 0; i < 5; i++) {
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(kiko::randomf(), kiko::Pi, kiko::Transform{{ (float)kiko::random(800), (float)kiko::random(600) }, kiko::randomf(3), 1 }, model);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(150.0f, kiko::Pi, kiko::Transform{{ (float)kiko::random(800), (float)kiko::random(600) }, kiko::randomf(3), 1.5f }, kiko::g_modelManager.Get("ship.txt"));
+		enemy->m_tag = "Enemy";
 		scene.Add(std::move(enemy));
 	}
+#pragma endregion
 
 	bool quit = false;
 	while (!quit) {
@@ -108,9 +104,8 @@ int main(int argc, char* argv[]) {
 		transform.position.x = kiko::Wrap(transform.position.x, (float)kiko::g_renderer.GetWidth());
 		transform.position.y = kiko::Wrap(transform.position.y, (float)kiko::g_renderer.GetHeight());
 
-		//position += direction * speed * kiko::g_time.GetDeltaTime();
-		int mouseX = kiko::g_inputSystem.GetMousePosition().x;
-		int mouseY = kiko::g_inputSystem.GetMousePosition().y;
+		//int mouseX = kiko::g_inputSystem.GetMousePosition().x;
+		//int mouseY = kiko::g_inputSystem.GetMousePosition().y;
 		//cout << "x: " << mouseX << " y: " << mouseY << endl;
 		//if (kiko::g_inputSystem.GetMouseButtonDown(0) == 1) cout << "Left mouse button is being pressed" << endl;
 		//if (kiko::g_inputSystem.GetMouseButtonDown(1) == 1) cout << "Middle mouse button is being pressed" << endl;

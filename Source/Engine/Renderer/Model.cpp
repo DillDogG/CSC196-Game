@@ -37,4 +37,13 @@ namespace kiko {
 	void Model::Draw(Renderer& renderer, const Transform& transform) {
 		Draw(renderer, transform.position, transform.rotation, transform.scale);
 	}
+	float Model::GetRadius() {
+		if (m_radius) return m_radius;
+		for (auto point : m_points) {
+			float length = point.Length();
+			// sets radius to the longer of radius and length
+			m_radius = Max(m_radius, length);
+		}
+		return m_radius;
+	}
 }
