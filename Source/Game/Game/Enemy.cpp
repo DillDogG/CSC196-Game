@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Framework/Scene.h"
 #include "Player.h"
+#include "SpaceGame.h"
 #include "Weapon.h"
 #include "Renderer/Renderer.h"
 
@@ -32,5 +33,8 @@ void Enemy::Update(float dt) {
 }
 
 void Enemy::OnCollision(Actor* other) {
-	if (other->m_tag == "pWeapon") m_destroyed = true;
+	if (other->m_tag == "pWeapon") {
+		m_game->AddPoints(100);
+		m_destroyed = true;
+	}
 }

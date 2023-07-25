@@ -1,7 +1,8 @@
 #include "Player.h"
 #include "Weapon.h"
+#include "SpaceGame.h"
 #include "Framework/Scene.h"
-#include "../../Input/InputSystem.h"
+#include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
 
 void Player::Update(float dt) {
@@ -38,7 +39,12 @@ void Player::Update(float dt) {
 		weapon->m_tag = "pWeapon";
 		m_scene->Add(std::move(weapon));
 	} */
-	if (m_health < 1) m_destroyed = true;
+	if (m_health < 1) {
+		m_game->SetLives(m_game->GetLives() - 1);
+		dynamic_cast<SpaceGame*>(m_game)->SetState(SpaceGame::eState::PlayerDead);
+		m_destroyed = true;
+
+	}
 }
 
 void Player::OnCollision(Actor* other) {

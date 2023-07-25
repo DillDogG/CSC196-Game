@@ -170,20 +170,21 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SpaceGame.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Audio\Audio.vcxproj">
+    <ProjectReference Include="..\..\Engine\Audio\Audio.vcxproj">
       <Project>{ffa40714-e41b-4cec-b8d6-ead52883a6aa}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Input\Input.vcxproj">
-      <Project>{93ad2645-4f5b-44ee-bb90-5ca3680ce82a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Core\Core.vcxproj">
       <Project>{2e09a753-3084-4c98-a6b2-eab18911a2f7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Framework\Framework.vcxproj">
       <Project>{c130d9c0-55fc-47d3-8b32-29c62fb40b3f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\Input\Input.vcxproj">
+      <Project>{93ad2645-4f5b-44ee-bb90-5ca3680ce82a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Renderer\Renderer.vcxproj">
       <Project>{7ecf3db8-4736-4853-956c-a52bb99984ff}</Project>
@@ -192,6 +193,7 @@
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SpaceGame.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

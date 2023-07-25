@@ -5,7 +5,7 @@ namespace kiko {
 		auto iter = m_actors.begin();
 		while (iter != m_actors.end()) {
 			(*iter)->Update(dt);
-			((*iter)->m_destroyed) ? iter = m_actors.erase(iter) : ++iter;
+			((*iter)->m_destroyed) ? iter = m_actors.erase(iter) : iter++;
 		}
 
 		for (auto iter1 = m_actors.begin(); iter1 != m_actors.end(); iter1++) {

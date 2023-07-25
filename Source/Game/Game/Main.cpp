@@ -1,13 +1,15 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
-#include "../../Input/InputSystem.h"
+#include "Input/InputSystem.h"
 #include "Framework/Actor.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "../../Audio/AudioSystem.h"
+#include "Audio/AudioSystem.h"
 #include "Renderer/ModelManager.h"
 #include "Framework/Scene.h"
 #include "Renderer/Text.h"
+
+#include "SpaceGame.h"
 #include <iostream>
 #include <thread>
 
@@ -45,16 +47,14 @@ int main(int argc, char* argv[]) {
 	kiko::setFilePath("assets");
 
 	kiko::g_renderer.Initialize();
-	kiko::g_renderer.CreateWindow("CSC196", 800, 600);
+	
 	kiko::g_inputSystem.Initialize();
 	kiko::g_audioSystem.Initialize();
-	kiko::g_audioSystem.AddAudio("thrusters", "Thrusters.wav");
-	kiko::g_audioSystem.AddAudio("explosion", "Explosion.wav");
-	kiko::g_audioSystem.AddAudio("laser", "Laser_Shoot.wav");
-	std::shared_ptr<kiko::Font> font = std::make_shared<kiko::Font>("Freshman.ttf", 24);
 
-	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
-	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 1, 1, 1 });
+	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
+	game->Initialize();
+	
+	
 
 	vector<Star> stars;
 	for (int i = 0; i < 1000; i++) {
@@ -71,14 +71,8 @@ int main(int argc, char* argv[]) {
 	constexpr float turnRate = kiko::DegreesToRadians(180);
 
 	kiko::Scene scene;
-	std::unique_ptr<Player> player = make_unique<Player>(200.0f, kiko::Pi, transform, kiko::g_modelManager.Get("ship.txt"));
-	player->m_tag = "Player";
-	scene.Add(std::move(player));
-	for (int i = 0; i < 5; i++) {
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(150.0f, kiko::Pi, kiko::Transform{{ (float)kiko::random(800), (float)kiko::random(600) }, kiko::randomf(3), 1.5f }, kiko::g_modelManager.Get("ship.txt"));
-		enemy->m_tag = "Enemy";
-		scene.Add(std::move(enemy));
-	}
+	
+	
 #pragma endregion
 
 	bool quit = false;
@@ -127,9 +121,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		kiko::g_renderer.SetColor(255, 255, 255, 255);
-		scene.Update(kiko::g_time.GetDeltaTime());
-		scene.Draw(kiko::g_renderer);
-		text->Draw(kiko::g_renderer, 400, 300);
+		game->Update(kiko::g_time.GetDeltaTime());
+		game->Draw(kiko::g_renderer);
+		//text->Draw(kiko::g_renderer, 400, 300);
 		
 		kiko::g_renderer.EndFrame();
 

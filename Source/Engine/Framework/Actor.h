@@ -16,6 +16,8 @@ namespace kiko {
 		virtual void Draw(kiko::Renderer& renderer);
 		virtual void OnCollision(Actor* other) {}
 
+		class Game* m_game = nullptr;
+
 		float GetRadius() { return m_model->GetRadius() * m_transform.scale; }
 
 		class Scene* m_scene = nullptr;

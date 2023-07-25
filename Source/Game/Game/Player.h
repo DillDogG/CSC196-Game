@@ -8,14 +8,15 @@ public:
 		m_speed{ speed },
 		m_turnRate{ turnRate}
 	{
-		m_fireRate = 1.5f;
+		m_fireRate = 1;
 		m_fireTimer = m_fireRate;
 		m_immuneTime = 2.5f;
 		m_immuneTimer = m_immuneTime;
-		m_health = 3;
+		m_health = 2;
 	}
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
+	int GetHealth() { return m_health; }
 private:
 	float m_speed = 0;
 	float m_turnRate = 0;
