@@ -7,6 +7,7 @@
 #include "../../Audio/AudioSystem.h"
 #include "Renderer/ModelManager.h"
 #include "Framework/Scene.h"
+#include "Renderer/Text.h"
 #include <iostream>
 #include <thread>
 
@@ -50,6 +51,10 @@ int main(int argc, char* argv[]) {
 	kiko::g_audioSystem.AddAudio("thrusters", "Thrusters.wav");
 	kiko::g_audioSystem.AddAudio("explosion", "Explosion.wav");
 	kiko::g_audioSystem.AddAudio("laser", "Laser_Shoot.wav");
+	std::shared_ptr<kiko::Font> font = std::make_shared<kiko::Font>("Freshman.ttf", 24);
+
+	std::unique_ptr<kiko::Text> text = std::make_unique<kiko::Text>(font);
+	text->Create(kiko::g_renderer, "NEUMONT", kiko::Color{ 1, 1, 1, 1 });
 
 	vector<Star> stars;
 	for (int i = 0; i < 1000; i++) {
@@ -124,6 +129,7 @@ int main(int argc, char* argv[]) {
 		kiko::g_renderer.SetColor(255, 255, 255, 255);
 		scene.Update(kiko::g_time.GetDeltaTime());
 		scene.Draw(kiko::g_renderer);
+		text->Draw(kiko::g_renderer, 400, 300);
 		
 		kiko::g_renderer.EndFrame();
 

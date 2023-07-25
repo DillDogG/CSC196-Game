@@ -8,7 +8,7 @@ public:
 		m_speed{ speed },
 		m_turnRate{ turnRate}
 	{
-		m_fireRate = 0.25f;
+		m_fireRate = 1.5f;
 		m_fireTimer = m_fireRate;
 		m_immuneTime = 2.5f;
 		m_immuneTimer = m_immuneTime;

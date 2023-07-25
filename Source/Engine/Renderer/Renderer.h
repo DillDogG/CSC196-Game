@@ -26,6 +26,7 @@ namespace kiko {
 
 		int GetWidth() const { return m_width; }
 		int GetHeight() const { return m_height; }
+		friend class Text;
 	private:
 		int m_width = 0;
 		int m_height = 0;

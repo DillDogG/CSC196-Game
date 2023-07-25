@@ -19,14 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -112,7 +116,7 @@
       <Command>xcopy "$(ThirdPartyDir)SDL2-2.28.0\lib\$(PlatformTarget)\*.dll" "$(SolutionDir)Build" /Y</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;SDL2_ttf.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ThirdPartyDir)\SDL2-2.28.0\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
@@ -138,7 +142,7 @@
       <Command>xcopy "$(ThirdPartyDir)SDL2-2.28.0\lib\$(PlatformTarget)\*.dll" "$(SolutionDir)Build" /Y</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;SDL2_ttf.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ThirdPartyDir)\SDL2-2.28.0\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
@@ -160,7 +164,7 @@
       <Command>xcopy "$(ThirdPartyDir)SDL2-2.28.0\lib\$(PlatformTarget)\*.dll" "$(SolutionDir)Build" /Y</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;SDL2_ttf.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ThirdPartyDir)\SDL2-2.28.0\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
@@ -186,7 +190,7 @@
       <Command>xcopy "$(ThirdPartyDir)SDL2-2.28.0\lib\$(PlatformTarget)\*.dll" "$(SolutionDir)Build" /Y</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;SDL2_ttf.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ThirdPartyDir)\SDL2-2.28.0\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
