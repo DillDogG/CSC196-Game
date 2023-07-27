@@ -36,11 +36,33 @@ namespace kiko {
 
 		float Angle() const { return std::atan2f(y, x); }
 		Vector2 Rotate(float radians) const;
+
+		static float SignedAngle(const Vector2& v1, const Vector2& v2);
+		static float Angle(const Vector2& v1, const Vector2& v2);
+		static float Dot(const Vector2& v1, const Vector2& v2);
 	};
 	inline Vector2 Vector2::Rotate(float radians) const {
 		float _x = x * std::cos(radians) - y * std::sin(radians);
 		float _y = x * std::sin(radians) + y * std::cos(radians);
 		return { _x, _y };
+	}
+
+	// get the unsigned angle in radians between the normalized v1 and normalized v2
+	inline float Vector2::Angle(const Vector2& v1, const Vector2& v2) {
+		return std::acos(Dot(v1, v2));
+	}
+
+	// get the signed counterclockwise angle in radians between v1 and v2
+	inline float Vector2::SignedAngle(const Vector2& v1, const Vector2& v2) {
+		float y = v1.x * v2.y - v1.y * v2.x;
+		float x = v1.x * v2.x + v1.y * v2.y;
+
+		return std::atan2(y, x);
+	}
+
+	// get the dot product beteen v1 and v2 https://www.falstad.com/dotproduct/
+	inline float Vector2::Dot(const Vector2& v1, const Vector2& v2) {
+		return v1.x * v2.x + v1.y * v2.y;
 	}
 
 	inline std::istream& operator >> (std::istream& stream, Vector2& v) {

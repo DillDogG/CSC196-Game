@@ -9,8 +9,6 @@ void Weapon::Update(float dt) {
 }
 
 void Weapon::OnCollision(Actor* other) {
-	if (other->m_tag == "pWeapon" && m_tag == "eWeapon") m_destroyed = true;
-	if (other->m_tag == "eWeapon" && m_tag == "pWeapon") m_destroyed = true;
-	if (other->m_tag == "Enemy" && m_tag == "pWeapon") m_destroyed = true;
-	if (other->m_tag == "Player" && m_tag == "eWeapon") m_destroyed = true;
+	if (other->m_tag == "pWeapon" || other->m_tag == "eWeapon") m_destroyed = true;
+	
 }

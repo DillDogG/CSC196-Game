@@ -8,8 +8,8 @@
 #include "Renderer/ModelManager.h"
 #include "Framework/Scene.h"
 #include "Renderer/Text.h"
-
 #include "SpaceGame.h"
+#include "Framework/Emitter.h"
 #include <iostream>
 #include <thread>
 
@@ -50,6 +50,7 @@ int main(int argc, char* argv[]) {
 	
 	kiko::g_inputSystem.Initialize();
 	kiko::g_audioSystem.Initialize();
+
 
 	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
 	game->Initialize();
@@ -97,18 +98,13 @@ int main(int argc, char* argv[]) {
 			kiko::g_audioSystem.PlayOneShot("thrusters");
 			//}
 		}
+		if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) kiko::g_audioSystem.PlayOneShot("laser");
 
 		kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
 		transform.position += forward * speed * thrust * kiko::g_time.GetDeltaTime();
 		transform.position.x = kiko::Wrap(transform.position.x, (float)kiko::g_renderer.GetWidth());
 		transform.position.y = kiko::Wrap(transform.position.y, (float)kiko::g_renderer.GetHeight());
-
-		//int mouseX = kiko::g_inputSystem.GetMousePosition().x;
-		//int mouseY = kiko::g_inputSystem.GetMousePosition().y;
-		//cout << "x: " << mouseX << " y: " << mouseY << endl;
-		//if (kiko::g_inputSystem.GetMouseButtonDown(0) == 1) cout << "Left mouse button is being pressed" << endl;
-		//if (kiko::g_inputSystem.GetMouseButtonDown(1) == 1) cout << "Middle mouse button is being pressed" << endl;
-		//if (kiko::g_inputSystem.GetMouseButtonDown(2) == 1) cout << "Right mouse button is being pressed" << endl;
+		
 		kiko::g_renderer.SetColor(0, 0, 0, 0);
 		kiko::g_renderer.BeginFrame();
 
@@ -122,7 +118,9 @@ int main(int argc, char* argv[]) {
 
 		kiko::g_renderer.SetColor(255, 255, 255, 255);
 		game->Update(kiko::g_time.GetDeltaTime());
+		kiko::g_particleSystem.Update(kiko::g_time.GetDeltaTime());
 		game->Draw(kiko::g_renderer);
+		kiko::g_particleSystem.Draw(kiko::g_renderer);
 		//text->Draw(kiko::g_renderer, 400, 300);
 		
 		kiko::g_renderer.EndFrame();
