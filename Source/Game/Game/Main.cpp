@@ -21,7 +21,7 @@ public:
 	void Update() {
 		m_pos += m_vel * kiko::g_time.GetDeltaTime();
 	}
-	void Wrap(int w, int h) {
+	void Wrap(float w, float h) {
 		if (m_pos.x < 0) {
 			m_pos.x = w;
 		}
@@ -59,8 +59,8 @@ int main(int argc, char* argv[]) {
 
 	vector<Star> stars;
 	for (int i = 0; i < 1000; i++) {
-		kiko::vec2 pos(kiko::vec2(kiko::random(kiko::g_renderer.GetWidth()), kiko::random(kiko::g_renderer.GetHeight())));
-		kiko::vec2 vel(kiko::vec2(kiko::random(100, 200), kiko::random(2)));
+		kiko::vec2 pos(kiko::vec2((float)kiko::random(kiko::g_renderer.GetWidth()), (float)kiko::random(kiko::g_renderer.GetHeight())));
+		kiko::vec2 vel(kiko::vec2((float)kiko::random(100, 200), (float)kiko::random(2)));
 		stars.push_back(Star(pos, vel));
 	}
 
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
 		kiko::vec2 vel(2, 1);
 		for (auto& star : stars) {
 			star.Update();
-			star.Wrap(kiko::g_renderer.GetWidth(), kiko::g_renderer.GetHeight());
+			star.Wrap((float)kiko::g_renderer.GetWidth(), (float)kiko::g_renderer.GetHeight());
 			kiko::g_renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
 			kiko::g_renderer.DrawPoint(star.m_pos.x, star.m_pos.y);
 		}

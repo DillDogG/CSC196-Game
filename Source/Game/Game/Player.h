@@ -29,7 +29,7 @@ public:
 	void OnCollision(Actor* other) override;
 	int GetHealth() { return m_health; }
 	int GetMissile() { return m_missileCount; }
-	int GetAdrenaline() { return m_adrenaline; }
+	float GetAdrenaline() { return m_adrenaline; }
 
 	epState m_pState = epState::Normal;
 private:
